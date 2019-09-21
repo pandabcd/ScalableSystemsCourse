@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string output_1, output_2;
+// string output_1, output_2;
 
 // *********************
 // key_add = address of the key array
@@ -147,7 +147,7 @@ float* query_tree(IBinTree* ibt, int * query,const int query_length){
 		total_time += time_taken.count();
 	}
 	// cout<<(total_time/query_length)<<","<<min_time<<","<<max_time<<","<<total_time;
-	output_2 += to_string(query_length) + "," + to_string((float)total_time/(float)query_length) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
+	// output_2 += to_string(query_length) + "," + to_string((float)total_time/(float)query_length) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
 	return ans;
 }
 
@@ -165,7 +165,7 @@ void print_output(float* ans,const int ans_length, string output_file ){
 // Adds data in tree and returns the tree
 LinkedBinSearchTree* insert_lbst(const int* key, const float* val, const int insert_len){
 	// cout << "Adding data to lbst..." << endl;
-	output_1 += insert_len + ",";
+	// output_1 += insert_len + ",";
 	LinkedBinSearchTree* lbst = new LinkedBinSearchTree;
 	
 	for(int i=0;i<insert_len;i++){
@@ -178,7 +178,7 @@ LinkedBinSearchTree* insert_lbst(const int* key, const float* val, const int ins
 // Adds data in tree and returns the tree
 ArrayBinSearchTree* insert_abst(const int* key, const float* val, const int insert_len){
 	// cout << "Adding data to abst..." << endl;
-	output_1 += insert_len + ",";
+	// output_1 += insert_len + ",";
 	ArrayBinSearchTree* abst = new ArrayBinSearchTree;
 
 	for(int i=0;i<insert_len;i++){
@@ -191,7 +191,7 @@ ArrayBinSearchTree* insert_abst(const int* key, const float* val, const int inse
 // Adds data in tree and returns the tree
 LinkedBinTree* insert_lbt(const int* key, const float* val, const int insert_len){
 	// cout << "Adding data to lbt..." << endl;
-	output_1 += insert_len + ",";
+	// output_1 += insert_len + ",";
 	LinkedBinTree* lbt = new LinkedBinTree;
 
 	for(int i=0;i<insert_len;i++){
@@ -204,7 +204,7 @@ LinkedBinTree* insert_lbt(const int* key, const float* val, const int insert_len
 // Adds data in tree and returns the tree
 ArrayBinTree* insert_abt(const int* key, const float* val, const int insert_len){
 	// cout << "Adding data to abt..." << endl;
-	output_1 += insert_len + ",";
+	// output_1 += insert_len + ",";
 	ArrayBinTree* abt = new ArrayBinTree;
 
 	for(int i=0;i<insert_len;i++){
@@ -279,14 +279,14 @@ int main(int n, char *argv[])
 		cout<<"Invalid input parameters. Correct format is ./a.out [-abt|lbt|abst|lbst] -data datafile.tsv -query querykey.txt -output outvals.txt";
 	}
 
-	cout << scientific;
+	// cout << scientific;
     
-    output_1 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
-    output_2 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
+    // output_1 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
+    // output_2 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
 
     solve(argv[1], argv[3], argv[5], argv[7]);
 	
-    cout<<output_1<<endl;
-    cout<<output_2<<endl;
+    // cout<<output_1<<endl;
+    // cout<<output_2<<endl;
 	return 0;
 }
