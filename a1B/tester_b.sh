@@ -2,7 +2,7 @@ folder_add="test"
 result_folder="result"
 # LBST
 echo "LBST:"
-for i in 4
+for i in 4 5 6 
 do
 	command="./BTRunner.o abt -data $folder_add/tree_$i.tsv -query $folder_add/tree_query_4.tsv -output $folder_add/$result_folder/lbst_$i_query_$i.tsv"
 	# echo "Running: $command"

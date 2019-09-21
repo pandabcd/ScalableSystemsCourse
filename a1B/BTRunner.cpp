@@ -8,7 +8,7 @@
 
 using namespace std;
 
-// string output_1, output_2;
+string output_1, output_2;
 
 // *********************
 // key_add = address of the key array
@@ -147,7 +147,7 @@ float* query_tree(IBinTree* ibt, int * query,const int query_length){
 		total_time += time_taken.count();
 	}
 	// cout<<(total_time/query_length)<<","<<min_time<<","<<max_time<<","<<total_time;
-	// output_2 += to_string(query_length) + "," + to_string((float)total_time/(float)query_length) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
+	output_2 += to_string(query_length) + "," + to_string((float)total_time/(float)query_length) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
 	return ans;
 }
 
@@ -167,10 +167,29 @@ LinkedBinSearchTree* insert_lbst(const int* key, const float* val, const int ins
 	// cout << "Adding data to lbst..." << endl;
 	// output_1 += insert_len + ",";
 	LinkedBinSearchTree* lbst = new LinkedBinSearchTree;
-	
+
+	chrono::time_point<std::chrono::system_clock> start, end; 
+	chrono::duration<double> time_taken;
+	double max_time = FLT_MIN, min_time = FLT_MAX, total_time = 0;
+
 	for(int i=0;i<insert_len;i++){
+		start = chrono::system_clock::now();
+		
 		lbst->insert(key[i], val[i]);
+		
+		end = chrono::system_clock::now();
+		time_taken = end-start;
+		long double time_taken_s = time_taken.count();
+		// cout<< time_taken.count() <<endl;
+
+		max_time = max(max_time, time_taken.count());
+		min_time = min(min_time, time_taken.count());
+		total_time += time_taken.count();
+	
 	}
+
+	output_1 += to_string(insert_len) + "," + to_string((float)total_time/(float)insert_len) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
+
 
 	return lbst;
 }
@@ -181,9 +200,28 @@ ArrayBinSearchTree* insert_abst(const int* key, const float* val, const int inse
 	// output_1 += insert_len + ",";
 	ArrayBinSearchTree* abst = new ArrayBinSearchTree;
 
+
+chrono::time_point<std::chrono::system_clock> start, end; 
+	chrono::duration<double> time_taken;
+	double max_time = FLT_MIN, min_time = FLT_MAX, total_time = 0;
+
 	for(int i=0;i<insert_len;i++){
+		start = chrono::system_clock::now();
+		
 		abst->insert(key[i], val[i]);
+		
+		end = chrono::system_clock::now();
+		time_taken = end-start;
+		long double time_taken_s = time_taken.count();
+		// cout<< time_taken.count() <<endl;
+
+		max_time = max(max_time, time_taken.count());
+		min_time = min(min_time, time_taken.count());
+		total_time += time_taken.count();
+	
 	}
+
+	output_1 += to_string(insert_len) + "," + to_string((float)total_time/(float)insert_len) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
 
 	return abst;
 }
@@ -194,9 +232,28 @@ LinkedBinTree* insert_lbt(const int* key, const float* val, const int insert_len
 	// output_1 += insert_len + ",";
 	LinkedBinTree* lbt = new LinkedBinTree;
 
+	chrono::time_point<std::chrono::system_clock> start, end; 
+	chrono::duration<double> time_taken;
+	double max_time = FLT_MIN, min_time = FLT_MAX, total_time = 0;
+
 	for(int i=0;i<insert_len;i++){
+		start = chrono::system_clock::now();
+		
 		lbt->insert(key[i], val[i]);
+		
+		end = chrono::system_clock::now();
+		time_taken = end-start;
+		long double time_taken_s = time_taken.count();
+		// cout<< time_taken.count() <<endl;
+
+		max_time = max(max_time, time_taken.count());
+		min_time = min(min_time, time_taken.count());
+		total_time += time_taken.count();
+	
 	}
+
+	output_1 += to_string(insert_len) + "," + to_string((float)total_time/(float)insert_len) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
+
 
 	return lbt;
 }
@@ -207,9 +264,27 @@ ArrayBinTree* insert_abt(const int* key, const float* val, const int insert_len)
 	// output_1 += insert_len + ",";
 	ArrayBinTree* abt = new ArrayBinTree;
 
+	chrono::time_point<std::chrono::system_clock> start, end; 
+	chrono::duration<double> time_taken;
+	double max_time = FLT_MIN, min_time = FLT_MAX, total_time = 0;
+
 	for(int i=0;i<insert_len;i++){
+		start = chrono::system_clock::now();
+		
 		abt->insert(key[i], val[i]);
+		
+		end = chrono::system_clock::now();
+		time_taken = end-start;
+		long double time_taken_s = time_taken.count();
+		// cout<< time_taken.count() <<endl;
+
+		max_time = max(max_time, time_taken.count());
+		min_time = min(min_time, time_taken.count());
+		total_time += time_taken.count();
+	
 	}
+
+	output_1 += to_string(insert_len) + "," + to_string((float)total_time/(float)insert_len) + "," + to_string(min_time) + "," + to_string(max_time) + "," + to_string(total_time);
 
 	return abt;
 }
@@ -281,12 +356,12 @@ int main(int n, char *argv[])
 
 	// cout << scientific;
     
-    // output_1 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
-    // output_2 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
+    output_1 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
+    output_2 = string(argv[3]) + "," + string(argv[5]) + "." + string(argv[7]) + ",";
 
     solve(argv[1], argv[3], argv[5], argv[7]);
 	
-    // cout<<output_1<<endl;
-    // cout<<output_2<<endl;
+    cout<<output_1<<endl;
+    cout << output_2 << endl;
 	return 0;
 }
