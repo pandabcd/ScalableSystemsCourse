@@ -104,7 +104,7 @@ class LinkedBinTree: public IBinTree
 			float v;
 			node *left, *right;
 
-			node(int key, int val){
+			node(int key, float val){
 				k = key;
 				v = val;
 				left = NULL;
@@ -324,7 +324,7 @@ class LinkedBinSearchTree: public IBinTree
 			float val;
 			node *left, *right;
 
-			node(int k, int v){
+			node(int k, float v){
 				key = k;
 				val = v;
 				left = NULL;
