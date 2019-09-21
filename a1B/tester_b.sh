@@ -11,31 +11,31 @@ do
 done
 
 #ABT
-# echo "ABT:"
-# for i in 1 2 3
-# do
-# 	command="./BTRunner.o abt -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/abt_$i_query_$i.tsv"
-# 	# echo "Running: $command"
-# 	eval $command
-# 	echo
-# done
+echo "ABT:"
+for i in 4 5 6
+do
+	command="./BTRunner.o abt -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/abt_$i_query_$i.tsv"
+	# echo "Running: $command"
+	eval $command
+	echo
+done
 
-# #LBT
-# echo "LBT:"
-# for i in 1 2 3
-# do
-# 	command="./BTRunner.o lbt -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/lbt_$i_query_$i.tsv"
-# 	# echo "Running: $command"
-# 	eval $command
-# 	echo
-# done
+#LBT
+echo "LBT:"
+for i in 4 5 6
+do
+	command="./BTRunner.o lbt -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/lbt_$i_query_$i.tsv"
+	# echo "Running: $command"
+	eval $command
+	echo
+done
 
-# #ABST
-# echo "ABST:"
-# for i in 1 2 3
-# do
-# 	command="./BTRunner.o abst -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/abst_$i_query_$i.tsv"
-# 	# echo "Running: $command"
-# 	eval $command
-# 	echo
-# done
+#ABST
+echo "ABST:"
+for i in 4 5 6
+do
+	command="./BTRunner.o abst -data Test_Files/TestB/tree_$i.tsv -query Test_Files/TestB/tree_query_3.tsv -output Test_Files/ResultB/abst_$i_query_$i.tsv"
+	# echo "Running: $command"
+	eval $command
+	echo
+done
