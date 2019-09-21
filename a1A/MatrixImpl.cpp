@@ -31,7 +31,7 @@ class ArrayMatrix: public IMatrix
  			throw logic_error("Matrix already initiated!");
  		}
 
- 		cout<<"Initialising with "<<N<<" rows and "<<M<<" columns."<<endl;
+ 		// cout<<"Initialising with "<<N<<" rows and "<<M<<" columns."<<endl;
 		is_init = true;
 
 		row = N;
@@ -135,7 +135,7 @@ class CSRMatrix: public IMatrix
 		if(is_init){
  			throw logic_error("Matrix already initiated!");
  		}
- 		cout<<"Creating CSR with "<<N<<" rows and "<<M<<" columns."<<endl;
+ 		// cout<<"Creating CSR with "<<N<<" rows and "<<M<<" columns."<<endl;
 		is_init = true;
 
 		// First element is not necessarily 0 in this implementation(it is no. of nnz in first row)

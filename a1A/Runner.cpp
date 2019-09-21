@@ -24,11 +24,12 @@ using namespace std;
 // Code for loading matrix from input_file into array impl and returning object
 IMatrix* load_arr(char* input_file) 
 {
-	cout << "LOAD: ARRAY"  << endl;
+	// cout << "LOAD: ARRAY"  << endl;
 	ifstream fin(input_file);
 
 	if(fin.fail()){
-		cerr<<"Fin failed!!"<<endl;
+		cerr << "File fetching failed for " << input_file << endl;
+		exit(0);
 	}
 
 	int num_rows, num_cols;
@@ -54,11 +55,12 @@ IMatrix* load_arr(char* input_file)
 // Exactly the same as above but with csr object
 IMatrix* load_csr(char* input_file) 
 {
-	cout << "LOAD: CSR"  << endl;
+	// cout << "LOAD: CSR"  << endl;
 	ifstream fin(input_file);
 
 	if(fin.fail()){
-		cerr<<"FIN failed!!"<<endl;
+		cerr << "File fetching failed for " << input_file << endl;
+		exit(0);
 	}
 
 	int num_rows, num_cols;
@@ -102,18 +104,18 @@ IMatrix* init_csr(int rows, int cols)
 // prints matrix as TSV to output_file
 void print_mat(IMatrix* mat, char* output_file) 
 {
-	cout<<"PRINTING to: "<<output_file  << endl;
+	// cout<<"PRINTING to: "<<output_file  << endl;
 
 	ofstream fout(output_file);
 
 	// Writing row and column number
-	cout<<mat->row_count()<<endl;
+	// cout<<mat->row_count()<<endl;
 	if(fout.is_open()){
 		fout << mat->row_count() << "\t" << mat->col_count() << "\n";
 	}
 	else{
-		cout << "Unable to open file!";
-		return;
+		cout << "Unable to print to file " << output_file << endl;
+		exit(0);
 	}
 
 	// Writing individual elements
@@ -146,7 +148,8 @@ void load(char* mat_type, char* input_file, char* output_file)
 		cout << "[load] invalid matrix type input seen: " << mat_type << endl;
 	end = clock();
 	double time_used = ((double)end-start)/CLOCKS_PER_SEC;
-	cout << "Time taken to load(in s): " << time_used << endl;
+	// cout << "Time taken to load(in s): " << time_used*1000 << endl;
+	cout << time_used*1000 ;
 
 	// Timing the write method
 	start = clock();
@@ -154,7 +157,8 @@ void load(char* mat_type, char* input_file, char* output_file)
 	print_mat(mat1, output_file);
 	end = clock();
 	time_used = ((double)end-start)/CLOCKS_PER_SEC;
-	cout << "Time taken to write(in s): " << time_used << endl;
+	// cout << "Time taken to write(in s): " << time_used*1000 << endl;
+	// cout << time_used*1000;
 
 
 	return;
@@ -182,13 +186,13 @@ void transpose(char* mat_type, char* input_file, char* output_file)
 	
 	if (strcmp("array", mat_type)==0) 
     { 
-    	cout << "TRASNPOSE: ARRAY" << endl;
+    	// cout << "TRASNPOSE: ARRAY" << endl;
 		mat1 = load_arr(input_file);		
 		mat2 = init_arr(mat1->col_count(), mat1->row_count());
     }  
 	else if (strcmp("csr", mat_type)==0)
 	{
-		cout<<"TRASNPOSE: CSR"<< endl;	
+		// cout<<"TRASNPOSE: CSR"<< endl;	
 		mat1 = load_csr(input_file);
 		mat2 = init_csr(mat1->col_count(), mat1->row_count());
 	}
@@ -202,7 +206,8 @@ void transpose(char* mat_type, char* input_file, char* output_file)
 	transpose(mat1, mat2);
 	clock_t end = clock();
 	double time_used = ((double)end-start)/CLOCKS_PER_SEC;
-	cout << "Time taken to transpose(in s): " << time_used << endl;
+	// cout << "Time taken to transpose(in s): " << time_used*1000 << endl;
+	cout << time_used*1000;
 
 	// storing output matrix mat2 in file given by output_file
 	print_mat(mat2, output_file);
@@ -242,7 +247,7 @@ void multiply(char* mat_type, char* input_file1, char* input_file2, char* output
 
 	if (strcmp("array", mat_type)==0) 
     { 
-    	cout << "MULTIPLY ARRAY: " << endl;
+    	// cout << "MULTIPLY ARRAY: " << endl;
 		mat1 = load_arr(input_file1);
 		mat2 = load_arr(input_file2);
 
@@ -257,7 +262,7 @@ void multiply(char* mat_type, char* input_file1, char* input_file2, char* output
 
 	else if (strcmp("csr", mat_type)==0)
 	{
-		cout << "MULTIPLY CSR: " << endl;
+		// cout << "MULTIPLY CSR: " << endl;
 		mat1 = load_csr(input_file1);
 		mat2 = load_csr(input_file2);
 
@@ -280,7 +285,8 @@ void multiply(char* mat_type, char* input_file1, char* input_file2, char* output
 	multiply(mat1, mat2, mat3);
 	clock_t end = clock();
 	double time_used = ((double)end-start)/CLOCKS_PER_SEC;
-	cout << "Time taken to multiply(in s): " << time_used << endl;
+	// cout << "Time taken to multiply(in s): " << time_used*1000 << endl;
+	cout << time_used*1000;
 
 	// store output matrix mat3 in file given by output_file
 	print_mat(mat3, output_file);
@@ -297,6 +303,8 @@ void bmultiply(IMatrix* mat1, IMatrix* mat2, IMatrix* mat3)
 	int r1 = mat1->row_count(), c1 = mat1->col_count(), r2 = mat2->row_count(), c2 = mat2->col_count();
 	float dummy[r1][c2] = {0};
 
+	int block_size = r1/2;
+
 	// Defining the box in first three for loops
 	for(int i=0;i<r1;i+=block_size){
 		for(int j=0;j<c2;j+=block_size){
@@ -305,7 +313,7 @@ void bmultiply(IMatrix* mat1, IMatrix* mat2, IMatrix* mat3)
 				// Doing the actual multiplications here
 				for(int ii=0;ii<block_size;ii++){
 					for(int jj=0;jj<block_size;jj++){
-						for(int kk=0;kk<block_size;kk+){
+						for(int kk=0;kk<block_size;kk++){
 							dummy[i+ii][j+jj] += mat1->get(i+ii,k+kk)*mat2->get(k+kk,j+jj);
 						}
 					}
@@ -366,7 +374,15 @@ void bmultiply(char* mat_type, char* input_file1, char* input_file2, char* outpu
 	}
 	
 	// TODO: time this method and print "bmultiply,mat_type,output_file,time_millisec"
+	clock_t start = clock();
+
 	bmultiply(mat1, mat2, mat3);
+
+	// Multiply matrices
+	clock_t end = clock();
+	double time_used = ((double)end-start)/CLOCKS_PER_SEC;
+	// cout << "Time taken to multiply(in ms): " << time_used*1000 << endl;
+	cout << time_used*1000;
 	
 	// store output matrix mat3 in file given by output_file
 	print_mat(mat3, output_file);
@@ -396,7 +412,7 @@ int main(int n, char *argv[])
 	{
         bmultiply(argv[2], argv[3], argv[4],argv[5]);
 	} else 
-		cout << "[main] invalid input parameters. Valid usage is..." << endl;
+		cout << "[main] invalid input parameters. Check docs. for valid usage." << endl;
 
 	return 0;
 }

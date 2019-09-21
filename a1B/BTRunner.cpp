@@ -1,5 +1,4 @@
 #include<stdio.h>
-// #include"IBinTree.h"
 #include<string.h>
 #include "BinTreeImpl.cpp"
 #include<fstream>
@@ -19,6 +18,10 @@ int load_data(int** key_add, float** val_add, string data_file){
 	// **** READING FILE ****
 	// Have fin fail check
 	ifstream fin(data_file);
+	if(fin.fail()){
+		cerr << "Unable to load file: " << data_file <<endl;
+		exit(0);
+  	}
 	string s;
 	char c;
 	int len =0;
@@ -214,7 +217,8 @@ void solve(string type,string data_file, string query_file, string output_file)
 			}
 
 			double time_used = ((double)end-start)/CLOCKS_PER_SEC;
-			cout << "Time taken to insert(in s): " << time_used << endl;
+			// cout << "Time taken to insert(in s): " << time_used*1000 << endl;
+			cout << time_used*1000<<endl;
 
 			// Loading the queries and getting query length
 			int* query;
@@ -226,7 +230,9 @@ void solve(string type,string data_file, string query_file, string output_file)
 			float* ans = query_tree(ibt, query, query_length);
 			end = clock() ;
 			time_used = ((double)end-start)/CLOCKS_PER_SEC;
-			cout << "Time taken to query(in s): " << time_used << endl;
+			// cout << "Time taken to query(in s): " << time_used*1000 << endl;
+			// cout<<"CPS:" <<CLOCKS_PER_SEC;
+			cout << time_used*1000 << endl << endl ;
 
 			// print results in a file
 			print_output(ans,query_length, output_file);
