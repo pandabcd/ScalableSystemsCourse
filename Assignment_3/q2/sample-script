@@ -1,0 +1,7 @@
+# !/bin/csh
+#PBS -N myjob
+#PBS -q course
+#PBS -l nodes=4:ppn=8
+
+cd /home/mpiuser/mpi_test                # Direct it to your current working directory
+mpiexec -np 32 -f $PBS_NODEFILE ./test-mpi  #This runs with 32 MPI processes
