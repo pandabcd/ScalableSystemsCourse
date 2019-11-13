@@ -2,8 +2,8 @@
 #include<stdlib.h>
 #include "mpi.h"
 
-#define arr_size 40
-#define query_size 1
+#define arr_size 1000000
+#define query_size 2
 
 int main(int argc, char **argv){
     int rank,size;
@@ -20,8 +20,8 @@ int main(int argc, char **argv){
   	int recv;
 
     FILE *fptr;
-    // char *filename = "q2-sample-input.txt";
-    char *filename = "sample_input.txt";
+    char *filename = "q2-sample-input.txt";
+    // char *filename = "sample_input.txt";
 
     fptr = fopen(filename, "r");
     int *arr = (int *)malloc(arr_size*sizeof(int));
@@ -30,19 +30,13 @@ int main(int argc, char **argv){
     for(int i=0;i<arr_size;i++){
         fscanf(fptr,"%d", &arr[i]);
     }
-    // for(int i=0;i<query_size;i++){
-    //     fscanf(fptr,"%d ", &query_arr[i]);
-    // }
 
-    query_arr[0] = arr[33];
+
+    query_arr[0] = arr[39]
+    query_arr[1] = arr[678923];
     
 
-    // for(int i=0;i<size;i++){
-    //     if(i!=rank){
-    //         MPI_Isend(&rank,1,MPI_INT,i,86,MPI_COMM_WORLD,&request);
-    //     }
-    // }
-
+    
     // MPI_Irecv(&recv,1,MPI_INT,MPI_ANY_SOURCE,86,MPI_COMM_WORLD,&request);
     int dummy = 42;
     int width = arr_size/size;
