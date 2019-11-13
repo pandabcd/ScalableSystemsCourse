@@ -58,9 +58,9 @@ int main(int argc, char **argv){
             printf("Element found by process %d at %d\n", rank, i);
             not_found = 0;
             for(int j=0;j<size;j++){
-                if(j!=rank){
+                // if(j!=rank){
                     MPI_Isend(&i,1,MPI_INT,j,0,MPI_COMM_WORLD,&request_send[j]);
-                }
+                // }
             }
             break;
         }
@@ -68,23 +68,30 @@ int main(int argc, char **argv){
 
     if(not_found==-1){
         for(int j=0;j<size;j++){
-            if(j!=rank){
+            // if(j!=rank){
                 MPI_Isend(&not_found,1,MPI_INT,j,0,MPI_COMM_WORLD,&request_send[j]);
-            }
+            // }
         }
         printf("I am a useless thread. My id is %d (not found = %d)\n", rank, not_found);
     }
 
-
-    int j = 1-rank;
-    int done = 0;
-    MPI_Irecv(&recv,1,MPI_INT,j,0,MPI_COMM_WORLD,&request_receive[j]);
-    while(!done){
-        printf("Not done (process %d)\n", rank);
-        MPI_Test(&request_receive[j], &done, &status[j]);
+    int final_recv = -1;
+    for(int j=0;j<size;j++){
+        // if(j==rank){
+        //     continue;
+        // }
+        int done = 0;
+        MPI_Irecv(&recv,1,MPI_INT,j,0,MPI_COMM_WORLD,&request_receive[j]);
+        while(!done){
+            MPI_Test(&request_receive[j], &done, &status[j]);
+        }
+        if(recv!=-1){
+            final_recv = recv;
+        }
     }
 
-    printf("Received %d(process %d)\n", recv, rank);
+    // if(rank==0)
+        printf("Received %d(process %d)\n", final_recv, rank);
 
     // int done;
     // for(int j=0;j<size;j++){
