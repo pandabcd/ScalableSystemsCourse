@@ -14,7 +14,7 @@ int main(int argc, char **argv){
     
     
     MPI_Status status[size];
-    MPI_Request request_send[size], request_receive[size];
+    MPI_Request request_send[size], request_receive[query_size][size];
 
     
     int recv;
@@ -41,35 +41,10 @@ int main(int argc, char **argv){
     // }
     
 
-    
-    int width = arr_size/size;
-    int not_found = -1;
-    
-    // For every query
-    for(int q=0;q<query_size;q++){
-        int found = 0;
-        // Every thread finds it part
-        for(int i=rank*width;i<(rank+1)*width;i++){
-            if(arr[i]==query_arr[q]){
-                result_arr[q] = i;
-                found = 1;
-                // Send result to every processor if found
-                for(int j=0;j<size;j++){
-                    MPI_Isend(&i,1,MPI_INT,j,q,MPI_COMM_WORLD,&request_send[j]);
-                }
-                break;
-            }
-        }
-        if(!found){
-          int dummy = -1;
-          for(int j=0;j<size;j++){
-            MPI_Isend(&dummy,1,MPI_INT,j,q,MPI_COMM_WORLD,&request_send[j]);
-          }
-        }
-    }
-   
+  double start_time = MPI_Wtime();
 
-    int final_result[query_size];
+
+int final_result[query_size];
     for(int i=0;i<query_size;i++){
       final_result[i] = -1;
     }
@@ -83,27 +58,88 @@ int main(int argc, char **argv){
 
     for(int q=0;q<query_size;q++){
       for(int j=0;j<size;j++){
-          int done = 0;
-
-          MPI_Irecv(&receive_store[q][j],1,MPI_INT,j,q,MPI_COMM_WORLD,&request_receive[j]);
-          while(!done){
-              MPI_Test(&request_receive[j], &done, &status[j]);
-          }
-
+          MPI_Irecv(&receive_store[q][j],1,MPI_INT,j,q,MPI_COMM_WORLD,&request_receive[q][j]);
       }
     }
 
 
-    if(rank==0){
-        for(int q=0;q<query_size;q++){
-          for(int j=0;j<size;j++){
-            printf("%d ", receive_store[q][j]);
-          }
-            printf("\n");
-          }
+    int done[query_size];
+    for(int q=0;q<query_size;q++){
+      done[q] = 0;
     }
-    
 
+// while(!done){
+//             MPI_Test(&request_receive[j], &done, &status[j]);
+//             // printf("Not done\n");
+//         }
+
+    int width = arr_size/size;
+    int not_found = -1;
+    
+    // For every query
+    for(int q=0;q<query_size;q++){
+        int found = 0;
+        // Every thread finds it part
+        for(int i=rank*width;i<(rank+1)*width;i++){
+            // done[q] =1 only if some process has found the element, and not just after msg. is received
+            
+            // if(i%10000==0){
+
+            //   for(int p=0;p<size;p++){
+            //     MPI_Test(&request_receive[q][p], &done[p], &status[p]);
+            //     if(done[p]){
+            //       final_result[q] = receive_store[q][p];
+            //       break;  
+            //     }
+            //   }
+            // }
+
+            
+
+
+            if(arr[i]==query_arr[q]){
+                result_arr[q] = i;
+                found = 1;
+                // Send result to every processor if found
+                for(int j=0;j<size;j++){
+                    MPI_Isend(&i,1,MPI_INT,j,q,MPI_COMM_WORLD,&request_send[j]);
+                    final_result[q] = i;
+                }
+                break;
+            }
+        }
+        if(!found){
+          int dummy = -1;
+          for(int j=0;j<size;j++){
+            MPI_Isend(&dummy,1,MPI_INT,j,q,MPI_COMM_WORLD,&request_send[j]);
+          }
+        }
+    }
+   
+
+   MPI_Barrier(MPI_COMM_WORLD);
+
+
+  
+
+
+    // if(rank==0){
+    //     for(int q=0;q<query_size;q++){
+    //       for(int j=0;j<size;j++){
+    //         printf("%d ", receive_store[q][j]);
+    //       }
+    //         printf("\n");
+    //       }
+    // }
+    
+  double total_time = MPI_Wtime() - start_time;
+
+  if(rank==0){
+    for(int q=0;q<query_size;q++){
+      printf("%d\n", final_result[q]);
+    }
+    printf("Total time taken: %lf \n", total_time);
+  }
   
     MPI_Finalize();
 
