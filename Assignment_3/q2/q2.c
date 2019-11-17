@@ -83,16 +83,16 @@ int final_result[query_size];
         for(int i=rank*width;i<(rank+1)*width;i++){
             // done[q] =1 only if some process has found the element, and not just after msg. is received
             
-            // if(i%10000==0){
-
-            //   for(int p=0;p<size;p++){
-            //     MPI_Test(&request_receive[q][p], &done[p], &status[p]);
-            //     if(done[p]){
-            //       final_result[q] = receive_store[q][p];
-            //       break;  
-            //     }
-            //   }
-            // }
+            // How often this should be checked depends on the data distribution
+            if(i%10000==0){
+              for(int p=0;p<size;p++){
+                MPI_Test(&request_receive[q][p], &done[p], &status[p]);
+                if(receive_store[q][p]!=0){
+                  final_result[q] = receive_store[q][p];
+                  break;  
+                }
+              }
+            }
 
             
 
