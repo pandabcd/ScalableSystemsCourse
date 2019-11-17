@@ -63,9 +63,11 @@ int final_result[query_size];
     }
 
 
-    int done[query_size];
+    int done[query_size][size];
     for(int q=0;q<query_size;q++){
-      done[q] = 0;
+      for(int p=0;p<size;p++){
+        done[q][p] = 0;
+      }
     }
 
 // while(!done){
@@ -86,8 +88,8 @@ int final_result[query_size];
             // How often this should be checked depends on the data distribution
             if(i%10000==0){
               for(int p=0;p<size;p++){
-                MPI_Test(&request_receive[q][p], &done[p], &status[p]);
-                if(receive_store[q][p]!=-1){
+                MPI_Test(&request_receive[q][p], &done[q][p], &status[p]);
+                if(done[q][p]){
                   final_result[q] = receive_store[q][p];
                   break;  
                 }
@@ -127,7 +129,7 @@ int final_result[query_size];
         for(int q=0;q<query_size;q++){
           for(int j=0;j<size;j++){
             printf("%d ", receive_store[q][j]);
-            final_result[q] = final_result[q] > receive_store[q][j] ?  final_result[q] : receive_store[q][j];
+            // final_result[q] = final_result[q] > receive_store[q][j] ?  final_result[q] : receive_store[q][j];
           }
             printf("\n");
           }
